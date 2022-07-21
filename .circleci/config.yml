@@ -11,11 +11,10 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            # Empting the bucket first
-            aws s3 rm s3://"udapeople-<<parameters.id>>" --recursive
-            # Deleting the infrastructure stacks
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.id>>"
             aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.id>>"
+            # Empting the bucket first before cleaning up the front-end stack
+            aws s3 rm s3://"udapeople-<<parameters.id>>" --recursive
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.id>>"
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
