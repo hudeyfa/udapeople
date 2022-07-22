@@ -159,7 +159,7 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
-          root: ~/project/.circleci/ansible/
+          root: .circleci/ansible/
           paths:
             - inventory.txt
       # Here's where you will add some code to rollback on failure
@@ -174,7 +174,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["b5:16:a5:ac:c4:28:23:e1:8d:09:03:64:a4:33:d2:c6"]
       - attach_workspace: 
-          at: ~/project
+          at: .circleci/ansible/
       - run:
           name: Install dependencies
           command: |
@@ -182,7 +182,7 @@ jobs:
       - run:
           name: Configure server
           command: |
-            ansible-playbook -i ~/project/inventory.txt .circleci/ansible/configure-server.yml
+            ansible-playbook -i .circleci/ansible/inventory.txt .circleci/ansible/configure-server.yml
       # Here's where you will add some code to rollback on failure      
 
 
