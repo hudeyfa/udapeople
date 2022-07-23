@@ -11,9 +11,12 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
+            # Empting the bucket first before cleaning up
+            if aws s3 ls | grep udapeople-<<parameters.id>>
+            then
+              aws s3 rm s3://"udapeople-<<parameters.id>>" --recursive
+            fi
             aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.id>>"
-            # Empting the bucket first before cleaning up the front-end stack
-            aws s3 rm s3://"udapeople-<<parameters.id>>" --recursive
             aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.id>>"
 
   revert-migrations:
@@ -215,8 +218,8 @@ jobs:
           name: Install dependencies
           command: |
             yum update -y && yum install -y tar gzip curl
-            curl -sL https://rpm.nodesource.com/setup_13.x | sudo bash -
-            yum install -y nodejs
+            curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+            yum install -y nodejs npm
       - run:
           name: Get backend url
           command: |
@@ -246,14 +249,14 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["b5:16:a5:ac:c4:28:23:e1:8d:09:03:64:a4:33:d2:c6"]
-      - attach_workspace: 
-          at: .circleci/ansible/
       - run:
           name: Install dependencies
           command: |
             yum update -y && yum install -y tar gzip curl
-            curl -sL https://rpm.nodesource.com/setup_13.x | sudo bash -
-            yum install -y nodejs
+            curl -sL https://rpm.nodesource.com/setup_13.x | bash -
+            yum install -y nodejs npm
+      - attach_workspace: 
+          at: .circleci/ansible/
       - run:
           name: Deploy backend
           command: |
