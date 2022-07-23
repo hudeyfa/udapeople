@@ -254,7 +254,7 @@ jobs:
           command: |
             yum update -y && yum install -y tar gzip curl
             curl -sL https://rpm.nodesource.com/setup_13.x | bash -
-            yum install -y nodejs npm
+            yum install -y nodejs npm ansible
       - attach_workspace: 
           at: .circleci/ansible/
       - run:
