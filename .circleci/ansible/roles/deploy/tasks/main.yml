@@ -7,6 +7,7 @@
 
 - name: Start the app
   shell: |
+    echo "ls output: "
     ls
     npm install
     pm2 stop default
