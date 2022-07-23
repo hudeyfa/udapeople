@@ -27,7 +27,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = $(curl --insecure https://kvdb.io/C7wC1gbrHrhWqRtr7wpa1S/"migration_<<parameters.id>>")
+            SUCCESS=$(curl --insecure https://kvdb.io/C7wC1gbrHrhWqRtr7wpa1S/"migration_<<parameters.id>>")
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -214,9 +214,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            yum update -y && yum install -y python3
-            yum install -y nodejs npm
-            yum install -y tar gzip
+            yum update -y && yum install -y tar gzip curl
+            curl -sL https://rpm.nodesource.com/setup_13.x | sudo bash -
+            yum install -y nodejs
       - run:
           name: Get backend url
           command: |
@@ -241,7 +241,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: amazon/aws-cli
     steps:
       - checkout
       - add_ssh_keys:
@@ -250,7 +250,10 @@ jobs:
           at: .circleci/ansible/
       - run:
           name: Install dependencies
-          command: apk add --update ansible
+          command: |
+            yum update -y && yum install -y tar gzip curl
+            curl -sL https://rpm.nodesource.com/setup_13.x | sudo bash -
+            yum install -y nodejs
       - run:
           name: Deploy backend
           command: |
