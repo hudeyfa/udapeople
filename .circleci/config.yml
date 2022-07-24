@@ -202,7 +202,7 @@ jobs:
           name: Install dependencies for rollback tasks
           command: |
             sudo apt update
-            sudo pt install -y awscli
+            sudo apt install -y awscli
       - run:
           name: Run migrations
           command: |
