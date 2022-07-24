@@ -178,13 +178,13 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["b5:16:a5:ac:c4:28:23:e1:8d:09:03:64:a4:33:d2:c6"]
-      - attach_workspace: 
-          at: .circleci/ansible/
       - run:
           name: Install dependencies
           command: |
             yum update -y && yum install -y tar gzip
             amazon-linux-extras install ansible2 -y
+      - attach_workspace: 
+          at: .circleci/ansible/
       - run:
           name: Configure server
           command: |
