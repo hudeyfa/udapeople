@@ -6,6 +6,7 @@
     dest: /home/ubuntu/
 
 - name: Start the app
+  become: true
   shell: |
     echo "ls output: "
     ls
