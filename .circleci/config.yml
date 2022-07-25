@@ -393,10 +393,9 @@ jobs:
       - run:
           name: Remove old stacks and files
           command: |
-            OldBucket="udapeople-782397659463" # Manually created bucket
             if [[ "${OldWorkflowID}" != "${CIRCLE_WORKFLOW_ID:0:7}" ]]
             then
-              aws s3 rm "s3://${OldBucket}" --recursive
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
             fi
