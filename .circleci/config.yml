@@ -384,15 +384,15 @@ jobs:
             # Save OldWorkflowID for the next run step
             echo "export OldWorkflowID=${OldWorkflowID}" >> $BASH_ENV
 
-            # Fetch the stack names          
-            export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-              --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
-            echo Stack names: "${STACKS[@]}" 
-            # Save STACKS for the next run step
-            echo "export STACKS=${STACKS[@]}" >> $BASH_ENV  
+            # Fetch the stack names and save it in a text file     
+            aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
+              --stack-status-filter CREATE_COMPLETE --no-paginate --output text > stacks.txt 
+            echo "Stack names: $(cat stacks.txt)" 
+         
       - run:
           name: Remove old stacks and files
           command: |
+            export STACKS=$(cat stacks.txt)
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
