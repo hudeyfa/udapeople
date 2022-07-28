@@ -1,0 +1,5 @@
+https://github.com/hudeyfa/udapeople [URL01]
+http://udapeople-8b26990.s3-website-us-east-1.amazonaws.com [URL02]
+http://d22esex8vmx58d.cloudfront.net [URL03]
+http://54.234.30.71:3030/api/status [URL04]
+http://ec2-44-201-178-207.compute-1.amazonaws.com:9090/targets [URL05]
